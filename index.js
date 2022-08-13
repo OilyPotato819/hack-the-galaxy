@@ -45,7 +45,7 @@ allWords.forEach((word) => {
 });
 
 const signals = [
-   //    'papsfrutesutternet',
+   'papsfrutesutternet',
    //    'epalwrotavey',
    //    'licagamchitetraison',
    //    'rafietamidrey',
