@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const buffer = fs.readFileSync('common-words.txt');
+const buffer = fs.readFileSync('test.txt');
 
 const words = {
    a: [],
@@ -44,96 +44,86 @@ allWords.forEach((word) => {
    }
 });
 
-const signalArray = [];
+const validWords = new Map();
 
-const validWords = {};
+let currentSignal = signals[0];
 
-class Signal {
-   constructor(name) {
-      if (currentSignal === name) {
-         validWords[name] = new Map();
-         signalArray.push(name);
+const signals = [
+   'oliverbenruby', 
+   'papsfrutesutternet', 
+   'epalwrotavey', 
+   'licagamchitetraison', 
+   'rafietamidrey', 
+   'holioskinnecker', 
+   'whildorsawen', 
+   'lierfictengthert', 
+   'litbigonesareress', 
+   'gasmarmtechet'
+];
+
+const firstLetter1 = signal[0];
+
+words[firstLetter1].forEach((firstWord) => {
+   let lettersLeft1 = signal;
+   let lettersLeft2 = signal;
+
+   for (let letterNum = 0; letterNum < firstWord.length; letterNum++) {
+      const letter = firstWord[letterNum];
+
+      const index = lettersLeft1.indexOf(letter);
+
+      if (index > -1) {
+         lettersLeft1 = lettersLeft1.slice(index + 1);
+         lettersLeft2 = lettersLeft2.replace(letter, '');
+      } else {
+         return;
       }
    }
-}
 
-let currentSignal = 'epalwrotavey';
+   validWords.set(firstWord, []);
 
-let signal1 = new Signal('papsfrutesutternet'); // t
-let signal2 = new Signal('epalwrotavey'); // w
-let signal3 = new Signal('licagamchitetraison'); //
-let signal4 = new Signal('rafietamidrey'); // t
-let signal5 = new Signal('holioskinnecker'); //
-let signal6 = new Signal('whildorsawen'); // h
-let signal7 = new Signal('lierfictengthert'); // i
-let signal8 = new Signal('litbigonesareress'); //
-let signal9 = new Signal('gasmarmtechet'); // r
+   goodWords.forEach((secondWord) => {
+      if (secondWord === firstWord) return;
 
-signalArray.forEach((signal) => {
-   const firstLetter1 = signal[0];
+      let passedArray = [];
 
-   words[firstLetter1].forEach((firstWord) => {
-      let lettersLeft1 = signal;
-      let lettersLeft2 = signal;
+      let lettersLeftWord = lettersLeft2;
+      let lettersLeft3 = lettersLeftWord;
 
-      for (let letterNum = 0; letterNum < firstWord.length; letterNum++) {
-         const letter = firstWord[letterNum];
-
-         const index = lettersLeft1.indexOf(letter);
+      for (let letterNum = 0; letterNum < secondWord.length; letterNum++) {
+         const letter = secondWord[letterNum];
+         const index = lettersLeftWord.indexOf(letter);
 
          if (index > -1) {
-            lettersLeft1 = lettersLeft1.slice(index + 1);
-            lettersLeft2 = lettersLeft2.replace(letter, '');
+            lettersLeftWord = lettersLeftWord.slice(index + 1);
+            lettersLeft3 = lettersLeft3.replace(letter, '');
          } else {
             return;
          }
       }
 
-      validWords[signal].set(firstWord, []);
+      goodWords.forEach((thirdWord) => {
+         if (thirdWord === firstWord || thirdWord === secondWord) return;
 
-      goodWords.forEach((secondWord) => {
-         if (secondWord === firstWord) return;
+         if (firstWord.length + secondWord.length + thirdWord.length !== signal.length - 1) {
+            return;
+         }
 
-         let passedArray = [];
+         lettersLeftWord = lettersLeft3;
 
-         let lettersLeftWord = lettersLeft2;
-         let lettersLeft3 = lettersLeftWord;
+         for (let letterNum = 0; letterNum < thirdWord.length; letterNum++) {
+            const letter = thirdWord[letterNum];
 
-         for (let letterNum = 0; letterNum < secondWord.length; letterNum++) {
-            const letter = secondWord[letterNum];
-            const index = lettersLeftWord.indexOf(letter);
+            const includes = lettersLeftWord.includes(letter);
 
-            if (index > -1) {
-               lettersLeftWord = lettersLeftWord.slice(index + 1);
-               lettersLeft3 = lettersLeft3.replace(letter, '');
+            if (includes) {
+               lettersLeftWord = lettersLeftWord.replace(letter, '');
             } else {
                return;
             }
          }
 
-         goodWords.forEach((thirdWord) => {
-            if (thirdWord === firstWord || thirdWord === secondWord) return;
-
-            if (firstWord.length + secondWord.length + thirdWord.length !== signal.length - 1) {
-               return;
-            }
-
-            lettersLeftWord = lettersLeft3;
-
-            for (let letterNum = 0; letterNum < thirdWord.length; letterNum++) {
-               const letter = thirdWord[letterNum];
-
-               const includes = lettersLeftWord.includes(letter);
-
-               if (includes) {
-                  lettersLeftWord = lettersLeftWord.replace(letter, '');
-               } else {
-                  return;
-               }
-            }
-
-            validWords[signal].get(firstWord).push([secondWord, thirdWord, lettersLeftWord]);
-         });
+         validWords.get(firstWord).push([secondWord, thirdWord, lettersLeftWord]);
       });
    });
 });
@@ -144,7 +134,7 @@ function mapToObj(map) {
    return obj;
 }
 
-const myMap = validWords[currentSignal];
+const myMap = validWords;
 
 const myJson = {};
 myJson.myMap = mapToObj(myMap);
