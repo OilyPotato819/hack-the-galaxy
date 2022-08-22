@@ -33,7 +33,7 @@ const words = {
 
 const goodWords = [];
 
-const allWords = buffer.toString().split('\r\n');
+const allWords = buffer.toString().split('\n');
 
 allWords.forEach((word) => {
    const firstLetter = word[0];
@@ -46,10 +46,8 @@ allWords.forEach((word) => {
 
 const validWords = new Map();
 
-let currentSignal = signals[0];
-
 const signals = [
-   'oliverbenruby', 
+   'olbiveernurbyl', 
    'papsfrutesutternet', 
    'epalwrotavey', 
    'licagamchitetraison', 
@@ -61,11 +59,13 @@ const signals = [
    'gasmarmtechet'
 ];
 
-const firstLetter1 = signal[0];
+let currentSignal = signals[0];
+
+const firstLetter1 = currentSignal[0];
 
 words[firstLetter1].forEach((firstWord) => {
-   let lettersLeft1 = signal;
-   let lettersLeft2 = signal;
+   let lettersLeft1 = currentSignal;
+   let lettersLeft2 = currentSignal;
 
    for (let letterNum = 0; letterNum < firstWord.length; letterNum++) {
       const letter = firstWord[letterNum];
@@ -105,7 +105,7 @@ words[firstLetter1].forEach((firstWord) => {
       goodWords.forEach((thirdWord) => {
          if (thirdWord === firstWord || thirdWord === secondWord) return;
 
-         if (firstWord.length + secondWord.length + thirdWord.length !== signal.length - 1) {
+         if (firstWord.length + secondWord.length + thirdWord.length !== currentSignal.length - 1) {
             return;
          }
 
@@ -134,16 +134,21 @@ function mapToObj(map) {
    return obj;
 }
 
-const myMap = validWords;
-
 const myJson = {};
-myJson.myMap = mapToObj(myMap);
+myJson.validWords = mapToObj(validWords);
 let json = JSON.stringify(myJson);
 
-json = json.replace(/:{/g, ':\n');
-json = json.replace(/:/g, ':\n');
-json = json.replace(/],/g, '],\n');
-json = json.replace(/]],/g, '],\n');
+const replacements = [
+	[/:{/g, ':\n'],
+  [/:/g, ':\n'],
+  [/],/g, '],\n'],
+  [/]],/g, '],\n'],
+	[/]}/g, ']\n}']
+];
+
+replacements.forEach(r => {
+	json = json.replace(r[0], r[1])
+})
 
 const file = fs.createWriteStream('output.txt');
 
