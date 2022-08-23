@@ -37,7 +37,9 @@ const goodWords = [];
 
 const allWords = buffer.toString().split('\n');
 
-allWords.forEach((word) => {
+allWords.forEach((element) => {
+	 let word = element.replace(/\s/g, '');
+	
    const firstLetter = word[0];
 
    if (/^[a-zA-Z]+$/.test(word) && word.length > 1) {
@@ -49,8 +51,7 @@ allWords.forEach((word) => {
 const validWords = new Map();
 
 const signals = [
-	 'apliplneebananaj',
-   'hbfiunhelgoeyn',
+   'wfpealaotwehmear',
    'papsfrutesutternet', 
    'epalwrotavey', 
    'licagamchitetraison', 
@@ -62,7 +63,7 @@ const signals = [
    'gasmarmtechet'
 ];
 
-let currentSignal = signals[9];
+let currentSignal = signals[0];
 
 const firstWords = words[currentSignal[0]].concat(words[currentSignal[1]]);
 let firstWordCounter = 0;
@@ -79,10 +80,14 @@ firstWords.forEach((firstWord) => {
       const index = lettersLeft1.indexOf(letter);
 
       if (index > -1) {
-				 lettersLeft1 = lettersLeft1.slice(index + 1);
-         lettersLeft2 = lettersLeft2.replace(letter, '');
+			 if (letterNum === 0) {
+					var firstLetter1 = currentSignal.indexOf(letter);
+				}
+				
+			 lettersLeft1 = lettersLeft1.slice(index + 1);
+       lettersLeft2 = lettersLeft2.replace(letter, '');
       } else {
-         return;
+        return;
       }
    }
 
@@ -133,7 +138,7 @@ firstWords.forEach((firstWord) => {
               return;
             }
          }
-          if (firstLetter2 < firstLetter3) {
+          if (firstLetter1 < firstLetter2 && firstLetter2 < firstLetter3) {
 						validWords.get(firstWord).push([secondWord, thirdWord, lettersLeftWord]);
 					}
       });
