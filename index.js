@@ -51,7 +51,7 @@ allWords.forEach((element) => {
 const validWords = new Map();
 
 const signals = [
-   'wfpealaotwehmear',
+   'pfoarmoptpee',
    'papsfrutesutternet', 
    'epalwrotavey', 
    'licagamchitetraison', 
@@ -80,13 +80,10 @@ firstWords.forEach((firstWord) => {
       const index = lettersLeft1.indexOf(letter);
 
       if (index > -1) {
-			 if (letterNum === 0) {
-					var firstLetter1 = currentSignal.indexOf(letter);
-				}
-				
 			 lettersLeft1 = lettersLeft1.slice(index + 1);
        lettersLeft2 = lettersLeft2.replace(letter, '');
       } else {
+				if (fileName === 'test') console.log('returned at first word')
         return;
       }
    }
@@ -95,6 +92,7 @@ firstWords.forEach((firstWord) => {
 	
    goodWords.forEach((secondWord) => {
       if (secondWord === firstWord) return;
+		 
       let lettersLeft3 = lettersLeft2;
 		  let lettersLeftWord = lettersLeft2;
 		 
@@ -103,25 +101,23 @@ firstWords.forEach((firstWord) => {
         const index = lettersLeftWord.indexOf(letter);
 
         if (index > -1) {
-          if (letterNum === 0) {
-						var firstLetter2 = currentSignal.indexOf(letter);
-					}
-					
           lettersLeftWord = lettersLeftWord.replace(letter, '')
 					lettersLeft3 = lettersLeft3.replace(letter, '');
 		  	} else {
+					if (fileName === 'test') console.log('returned at second word')
           return;
         }
 			}
        
       goodWords.forEach((thirdWord) => {
         if (
-					firstWord.length + secondWord.length + thirdWord.length !== currentSignal.length - 1 ||
-					thirdWord === firstWord || thirdWord === secondWord
+					firstWord.length + secondWord.length + thirdWord.length !== currentSignal.length - 1 || 
+				  thirdWord === firstWord || thirdWord === secondWord
 				) {
+					// if (fileName === 'test') console.log('returned at length check')
 				  return;
         }
-			   
+				
 				lettersLeftWord = lettersLeft3;
 
          for (let letterNum = 0; letterNum < thirdWord.length; letterNum++) {
@@ -129,18 +125,13 @@ firstWords.forEach((firstWord) => {
             const index = lettersLeftWord.indexOf(letter);
 
             if (index > -1) {
-							if (letterNum === 0) {
-					    	var firstLetter3 = currentSignal.indexOf(letter);
-				    	}
-							
               lettersLeftWord = lettersLeftWord.replace(letter, '');
             } else {
+							if (fileName === 'test') console.log('returned at third word')
               return;
             }
-         }
-          if (firstLetter1 < firstLetter2 && firstLetter2 < firstLetter3) {
-						validWords.get(firstWord).push([secondWord, thirdWord, lettersLeftWord]);
-					}
+				 }
+					validWords.get(firstWord).push([secondWord, thirdWord, lettersLeftWord]);
       });
    });
 
